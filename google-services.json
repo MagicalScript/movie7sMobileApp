@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "761780089401",
+    "firebase_url": "https://movieshome-55c39.firebaseio.com",
+    "project_id": "movieshome-55c39",
+    "storage_bucket": "movieshome-55c39.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:761780089401:android:2de36e219214f106",
+        "android_client_info": {
+          "package_name": "com.andigoapp.home.movie"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "761780089401-jjosmifr1kvgs66hhhc6rcks9m2raa6u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXadG3DzTYmIY8V6eObpB-srd0VKezoLU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

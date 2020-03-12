@@ -1,0 +1,100 @@
+page-episode-details {
+  .desc {
+    font-size: 1.1rem;
+}
+  page-episode-details img.ply {
+    max-width: 20%;
+}
+h3 {
+  margin: 0px;
+  margin-top: 0.5rem;
+}
+.toolbar-background.toolbar-background-ios {
+  background-color: color($colors, p-red);
+}
+.btnply {
+  /* z-index: 100; */
+  position: absolute;
+  top: 20%;
+}
+  img.ply {
+    max-width: 20%;
+  }
+    .details{
+      background-repeat:no-repeat;
+      background-size: contain;
+    }
+    .dov{
+      position: absolute;
+      justify-content: center;
+      margin-left: auto;
+      margin-right: auto;
+      top: 20%;
+      img {
+        max-width: 90%;
+        border: 0;
+        -webkit-box-shadow: 0px 0px 5px 0px rgba(255,255,255,1);
+        -moz-box-shadow: 0px 0px 5px 0px rgba(255,255,255,1);
+        box-shadow: 0px 0px 5px 0px rgba(255,255,255,1);
+    }
+    .btnply{
+      position: absolute;
+      img{
+        height: 10%;
+      }
+    }
+    }
+    button.btnply {
+      position: absolute;
+      top: 50%;
+  }
+    ion-list .ion-item div.item-inner ion-label p {
+        color: #fafafa;
+      }
+      iframe {
+        position: absolute;
+        top: 20%;
+        left: 0;
+        right: 0;
+        margin: auto;
+        z-index: 10;
+        // width: 100%;
+      }
+      .input-wrapper{
+        height: inherit;
+      }
+      .segment-button{
+        font-family: DroidKufi-Regular;
+        font-size: 2rem !important;
+      }
+
+      .play{
+        margin-right: 20px;
+      }
+      .my-class {
+        max-width: 94% !important;
+    }
+
+
+  .msend{
+    float: right;
+  }
+  .tsend{
+    width: 80%;
+  }
+  ion-icon.icon.icon-md.ion-md-send {
+    color: #e1a6a6;
+    direction: ltr;
+    font-size: 4rem;
+  }
+  textarea.text-input.text-input-md {
+    resize: inherit;
+  }
+  button.item-button.button.button-md.button-default.button-default-md.button-md-primary {
+      /* direction: ltr; */
+      font-size: 2rem;
+      height: 100px;
+      /* border: none; */
+      box-shadow: none;
+  }
+}

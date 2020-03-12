@@ -1,0 +1,173 @@
+<ion-header>
+
+  <ion-navbar class="gradient-header">
+    <ion-title>{{ param.name }}{{(' S'+ param.season +' E'+ param.num + ' ')}}</ion-title>
+    <ion-buttons end (click)="unfavoriteFilm(param)" *ngIf="param?.fav">
+      <button ion-button icon-only *ngIf="param?.type != 'season'">
+        <ion-icon (click)="unfavoriteFilm(param)" *ngIf="param?.fav" name="ios-bookmark"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons end (click)="favoriteFilm(param)" *ngIf="!param?.fav">
+      <button ion-button icon-only *ngIf="param?.type != 'season'">
+        <ion-icon (click)="favoriteFilm(param)" *ngIf="!param?.fav" name="ios-bookmark-outline"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="details" [ngStyle]="{'background-image': 'url(https://image.tmdb.org/t/p/w780' + (mposter) + ')' }">
+  <iframe *ngIf="shouldPlayTrailer" id="ytplayer" type="text/html" allowfullscreen [src]="movieUrl" frameborder="0"></iframe>
+  <div class="wrapper">
+    <div class="conter" *ngIf="param?.type != 'season'">
+      <div class="dov">
+        <img alt="" src="https://image.tmdb.org/t/p/w780 + data?.poster">
+      </div>
+      <div class="btnply">
+          <ion-select [(ngModel)]="selectedFilm" interface="action-sheet" (ngModelChange)="GoToplayer()">
+              <ion-option [value]="s" (click)="GoToplayer()" *ngFor="let s of serverList">Server {{s?.Title}}</ion-option>
+            </ion-select>
+        <img alt="" class="ply" src="../assets/imgs/play.png">
+      </div>
+      <div class="h">
+        <h3 style="font-weight: 300" ion-text color="light" text-center class="tagline">
+          {{ data?.tagline }}{{ data?.name }}
+        </h3>
+      </div>
+    </div>
+    <button *ngIf="param?.type != 'season'" (click)="toggleTrailer()" ion-fab color="p-red">
+      <ion-select [(ngModel)]="selectedFilm" interface="action-sheet" (ngModelChange)="GoToplayer()">
+        <ion-option [value]="s" (click)="GoToplayer()" *ngFor="let s of serverList">Server {{s?.Title}}</ion-option>
+      </ion-select>
+      <ion-icon [name]="iconName" class="play"></ion-icon>
+    </button>
+  </div>
+  <div class="descr" *ngIf="param?.type != 'season'">
+    <div class="desc">
+      <img src="../assets/imgs/tmdb2.png" alt="" class="tmdb">
+      <div class="ic">
+        <ion-icon name="ios-star"></ion-icon> {{ data?.vote_average?.toString() | slice:0:3 }}
+        <span>/10</span>
+      </div>
+    </div>
+    <div class="desc">
+      <h3>{{ param.name }}</h3>
+    </div>
+    <div class="desc">
+      <ion-icon name="md-time"></ion-icon> {{ data?.air_date | date: 'yyyy'}}
+      <span class="dote">.</span> مسلسلات
+      <span class="dote">.</span> {{ cate }}
+    </div>
+    <div class="story desc">
+      <h1>القصة</h1>
+      <p>{{ data?.overview }}</p>
+    </div>
+  </div>
+  <ion-toolbar no-border>
+    <ion-segment [(ngModel)]="episodeDetail">
+      <ion-segment-button value="reviews" *ngIf="param?.type != 'season'">
+        التعليقات
+      </ion-segment-button>
+      <ion-segment-button value="season">
+        مواسم
+      </ion-segment-button>
+      <ion-segment-button value="info">
+        معلومات
+      </ion-segment-button>
+      <ion-segment-button value="episode">
+        الحلقات
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+
+  <div [ngSwitch]="episodeDetail">
+    <ion-item>
+      <ion-chip *ngFor="let genre of data?.genres">
+        <ion-icon name="information-circle"></ion-icon>
+        <ion-label color="light">{{ genre.name }}</ion-label>
+      </ion-chip>
+    </ion-item>
+    <ion-list *ngSwitchCase="'info'">
+      <ion-item text-wrap>تاريخ الإصدار: {{ data?.air_date }}</ion-item>
+      <ion-item text-wrap>نظرة عامة: {{ data?.overview }}</ion-item>
+      <ion-item text-wrap>معدل الأصوات: {{ data?.vote_average }}/10</ion-item>
+
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'season'">
+      <ion-item (click)="GoToEpisode(season)" *ngFor="let season of _seasons">
+        <ion-thumbnail item-left>
+          <img [src]="'https://image.tmdb.org/t/p/w92'+season.poster" [alt]="season.poster_pathr">
+        </ion-thumbnail>
+        <h3>الموسم {{ season?.season }}</h3>
+        <p ion-text color="light">عدد الحلقات: {{ season?.Epi }} </p>
+        <p ion-text color="light">تاريخ الإصدار: {{ season?.first_air_date }} </p>
+      </ion-item>
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'episode'">
+      <ion-item text-wrap (click)="GoToEpisode(episode)" *ngFor="let episode of _episodes">
+        <ion-thumbnail item-left>
+          <img [src]="'https://image.tmdb.org/t/p/w92' + episode.poster">
+        </ion-thumbnail>
+        <h2>{{ episode.name }}</h2>
+        <p ion-text color="light">الحلقة: {{(' S'+ episode.season_number +' E'+ episode.episode_number + ' ')}}</p>
+        <p ion-text color="light">تاريخ الإصدار: {{ episode.air_date }}</p>
+
+      </ion-item>
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'cast'">
+      <!--<ion-item text-wrap *ngFor="let cast of data.credits?.cast" (click)="showPerson(cast.id)" >{{ cast.name + " as " + cast.character }}</ion-item>-->
+      <ion-item *ngFor="let cast of data?.credits?.cast" (click)="navActor(cast)">
+        <ion-avatar item-left>
+          <img [src]="'https://image.tmdb.org/t/p/w92' + cast.profile_path">
+        </ion-avatar>
+        <h2>{{ cast.name }}</h2>
+        <p ion-text color="light">Acted as {{ cast.character }}</p>
+      </ion-item>
+
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'reviews'">
+      <ion-item *ngIf="!reviews">
+        <h3>No Reviews available yet</h3>
+      </ion-item>
+      <ion-item *ngIf="logged">
+        <div class="container">
+          <div class="row">
+            <div class="col-xs-3 msend">
+
+              <button ion-button color="primary" (click)="sendComment(mcommment)">
+                <ion-icon name="md-send"></ion-icon>
+              </button>
+            </div>
+            <div class="col-xs-9 tsend">
+              <ion-item>
+                <ion-textarea placeholder="أكتب تعليقك هنا" [(ngModel)]="mcommment" name="note" autocomplete="on" autocorrect="on"></ion-textarea>
+
+              </ion-item>
+            </div>
+          </div>
+        </div>
+
+        <!-- <p ion-text color="light" text-wrap>{{ review?.comment }}</p> -->
+      </ion-item>
+      <ion-item *ngFor="let review of reviews">
+        <!--  <h2>{{ review.name }}</h2>
+          <p ion-text color="light" text-wrap>{{ review.comment }}</p> -->
+        <ion-avatar item-end>
+          <img src="../assets/imgs/user.svg" alt="">
+        </ion-avatar>
+        <h2>{{ review.name }}</h2>
+        <p>{{ review.comment }}</p>
+      </ion-item>
+      <ion-infinite-scroll (ionInfinite)="$event.waitFor(doInfinite())">
+        <ion-infinite-scroll-content loadingText="Getting more movies..." loadingSpinner="bubbles"></ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+    </ion-list>
+
+
+
+  </div>
+
+</ion-content>
